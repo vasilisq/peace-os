@@ -1,10 +1,13 @@
 CC			= gcc
-CCFLAGS 	= -m32 -Wall -fno-builtin -nostdinc -nostdlib -ffreestanding -Wextra -I '/usr/lib/gcc/x86_64-alpine-linux-musl/10.2.1/include'
+# todo: provide custom libc instead of gcc's here
+CCFLAGS 	= -m32 -Wall -Werror -fno-builtin -nostdinc -nostdlib -ffreestanding -Wextra -I '/usr/lib/gcc/x86_64-alpine-linux-musl/10.2.1/include'
 ASFLAGS 	= --32
 LDFLAGS 	= -melf_i386 -nostdlib
 LD      	= ld
-OBJFILES 	= boot.o  \
-	kernel.o
+OBJFILES 	= kernel/boot.o  \
+	kernel/kernel.o \
+	kernel/shell/shell.o \
+	kernel/shell/vga.o
 BUILD_DIR = build
 OUTPUT = $(BUILD_DIR)/kernel.bin
 IMAGE = $(BUILD_DIR)/kernel.iso
@@ -15,7 +18,7 @@ dev-all: clean all image
 .s.o:
 	as $(ASFLAGS) -o $@ $<
 .c.o:
-	$(CC) $(CCFLAGS) -Iinclude $(CFLAGS) -o $@ -c $<
+	$(CC) $(CCFLAGS) -o $@ -c $<
 $(OUTPUT): $(OBJFILES)
 	$(LD) $(LDFLAGS) -T linker.ld -o $@ $^
 check-boot:

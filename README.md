@@ -2,4 +2,4 @@
 
 Self-educational OS project. 
 
-Uses docker image for cross-compiling.
+Uses docker for cross-compiling.
