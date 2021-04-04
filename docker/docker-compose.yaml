@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  gcc:
+    container_name: gcc
+    build:
+      context: .
+    command: ["make", "dev-all"]
+    volumes:
+      - type: bind
+        source: ".."
+        target: "/src"
